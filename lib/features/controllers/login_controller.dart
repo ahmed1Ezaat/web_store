@@ -1,9 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:yt_ecommerce_admin_panel/data/models/setting_model.dart';
 import 'package:yt_ecommerce_admin_panel/data/models/user_model.dart';
 import 'package:yt_ecommerce_admin_panel/data/repositorise/authentication_repository.dart';
+import 'package:yt_ecommerce_admin_panel/data/repositorise/setting_repository.dart';
 import 'package:yt_ecommerce_admin_panel/data/repositorise/user_repository.dart';
 import 'package:yt_ecommerce_admin_panel/features/controllers/loders.dart';
 import 'package:yt_ecommerce_admin_panel/features/controllers/network_manger.dart';
@@ -59,7 +60,7 @@ class LoginController extends GetxController {
 
       TFullScreenLoader.stopLoading();
 
-      if (user!.role != AppRole.admin) {
+      if (user.role != AppRole.admin) {
         await AuthenticationRepository.instance.logout();
         TLodaers.errorSnackBar(
             title: 'No Authorized',
@@ -72,7 +73,7 @@ class LoginController extends GetxController {
       TFullScreenLoader.stopLoading();
       TLodaers.errorSnackBar(title: 'Oh snap', message: e.toString());
     }
-
+  }
     Future<void> registerAdmin() async {
       try {
         TFullScreenLoader.openLoaderDialog(
@@ -99,6 +100,10 @@ class LoginController extends GetxController {
           createdAt: DateTime.now(),
         ));
 
+        final settingsRepository = Get.put(SettingsRepository());
+
+        await settingsRepository.registerSettings(SettingModel(appLogo: '', appName: 'My App', taxRate: 0, shippingCost: 0));
+
         TFullScreenLoader.stopLoading();
 
         AuthenticationRepository.instance.screenRedirect();
@@ -108,4 +113,4 @@ class LoginController extends GetxController {
       }
     }
   }
-}
+

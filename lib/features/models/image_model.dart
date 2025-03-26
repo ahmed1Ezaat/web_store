@@ -1,9 +1,10 @@
-import 'dart:io';
+
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
+import 'package:universal_html/html.dart' as html; // تأكد من وجود هذا الاستيراد
 import 'package:yt_ecommerce_admin_panel/data/models/formatter.dart';
 
 class ImageModel {
@@ -18,7 +19,7 @@ class ImageModel {
   final DateTime? updatedAt;
   final String? contentType;
   // not mapped
-  final File? file;
+    final html.File? file;
   RxBool isSelected = false.obs;
   final Uint8List? localImageToDisplay;
 

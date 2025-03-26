@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:yt_ecommerce_admin_panel/data/models/formatter.dart';
+import 'package:yt_ecommerce_admin_panel/features/models/address_model.dart';
+import 'package:yt_ecommerce_admin_panel/features/models/order_model.dart';
 
 import '../../utils/constants/emums.dart';
 
@@ -14,6 +16,8 @@ class UserModel {
   AppRole role;
   DateTime? createdAt;
   DateTime? updatedAt;
+  List<OrderModel> ?orders;
+  List<AddressModel> ?addresses;
 
   UserModel(
       {this.id,
@@ -92,7 +96,7 @@ class UserModel {
             : DateTime.now(),
       );
     } else {
-      return UserModel.empty();
+      return empty();
     }
   }
 }

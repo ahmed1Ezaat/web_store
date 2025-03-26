@@ -1,6 +1,6 @@
 class TTexts {
-  static const String adminEmail = 'ahmeed@gmail.com';
-  static const String adminPassword = '12345678';
+  static const String adminEmail = 'ezzat_ahmed20@yahoo.com';
+  static const String adminPassword = 'Ahmed2003@#';
 
   static const String bannersStoreagePath = '/Banners';
   static const String categoryStoreagePath = '/Category';

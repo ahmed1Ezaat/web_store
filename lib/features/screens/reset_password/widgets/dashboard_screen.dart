@@ -11,7 +11,7 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const TSiteTemplate(
       desktop: DashboardDesktopScreen(),
-      mobile: DashboardMobileScreen(),
+      mobile: DashboardMobilScreen(),
       tablet: DashboardTabletScreen(),
     );
   }

@@ -36,6 +36,7 @@ class TImages {
   static const String hermanMillerLogo = 'assets/logos/icons8-jbl-48.png';
   static const String ikeaLogo = 'assets/logos/icons8-ikea-50.png';
   static const String acerLogo = 'assets/logos/icons8-laptop-50.png';
+  static const String paypal = '';
 
   // Anations
   static const String creatiogProductIllustration =
@@ -57,9 +58,10 @@ class TImages {
 
   // user
   static const String user = 'assets/icons/icons8-user-48.png';
+  static const String ridingIllustration = '';
 
 // Lotties
-  static const String docerAnimation = '';
+  static const String docerAnimation = 'assets/images/animations/Animation - 1736205915016.json';
   static const String defaultAnimation = '';
   static const String orderCompleteAnimation = '';
   static const String packageAnimation = '';
@@ -77,4 +79,8 @@ class TImages {
   static const String loaderAnimation = '';
   static const String securityAnimation = '';
   static const String cartAnimation = '';
+
+  // Banners
+  static const String banner = '';
+  static const String banner1 = '';
 }

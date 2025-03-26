@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
 import '../../../../common/widgets/layouts/templates/site_layout.dart';
 import 'edit_brand_desktop.dart';
@@ -9,12 +10,11 @@ class EditBrandScreen extends StatelessWidget {
   const EditBrandScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    final brand = BrandModel(id: 'id', image: 'image', name: 'name');
+    final brand = Get.arguments;
     return TSiteTemplate(
       desktop: EditBrandDesktopScreen(brand: brand),
       tablet: EditBrandTabletScreen(brand: brand),
       mobile: EditBrandMobileScreen(brand: brand),
     );
-// TSiteTemplate
   }
 }

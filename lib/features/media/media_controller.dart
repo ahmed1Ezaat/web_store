@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -119,11 +118,11 @@ class MediaController extends GetxController {
     for (var file in files) {
       if (file is html.File) {
         final bytes = await dropzoneCotroller.getFileData(file);
-        final fileObject = File.fromRawPath(bytes);
+        final webFile = html.File([bytes], file.name); // إنشاء ملف ويب
         final image = ImageModel(
           url: '',
-          file: fileObject,
           folder: '',
+          file: webFile,
           filename: file.name,
           localImageToDisplay: Uint8List.fromList(bytes),
         );

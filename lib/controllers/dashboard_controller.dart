@@ -1,60 +1,43 @@
 import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/controllers/helper_functions.dart';
+import 'package:yt_ecommerce_admin_panel/data/abstract/base_data_table_controller.dart';
+import 'package:yt_ecommerce_admin_panel/features/screens/order/order_controller.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/emums.dart';
 
 import '../features/models/order_model.dart';
+import '../features/screens/customer/customer_controller.dart';
 
-class DashboardController extends GetxController {
+class DashboardController extends TBaseController<OrderModel> {
   static DashboardController get instance => Get.find();
+
+  final orderController = Get.put(OrderController());
+  final customerController = Get.put(CustomerController());
 
   final RxList<double> weeklySales = <double>[].obs;
   final RxMap<OrderStatus, int> orderStatusData = <OrderStatus, int>{}.obs;
   final RxMap<OrderStatus, double> totalAmounts = <OrderStatus, double>{}.obs;
 
-  static final List<OrderModel> orders = [
-    OrderModel(
-        id: 'CWT0012',
-        status: OrderStatus.processing.toString(),
-        totalAmount: 265,
-        orderDate: DateTime(2024, 5, 20),
-        deliveryDate: DateTime(2024, 5, 20)),
-    OrderModel(
-        id: 'CWT0025',
-        status: OrderStatus.shipped.toString(),
-        totalAmount: 369,
-        orderDate: DateTime(2024, 5, 21),
-        deliveryDate: DateTime(2024, 5, 21)),
-    OrderModel(
-        id: 'CWT0152',
-        status: OrderStatus.delivered.toString(),
-        totalAmount: 254,
-        orderDate: DateTime(2024, 5, 22),
-        deliveryDate: DateTime(2024, 5, 22)),
-    OrderModel(
-        id: 'CWT0265',
-        status: OrderStatus.delivered.toString(),
-        totalAmount: 355,
-        orderDate: DateTime(2024, 5, 23),
-        deliveryDate: DateTime(2024, 5, 23)),
-    OrderModel(
-        id: 'CWT1536',
-        status: OrderStatus.delivered.toString(),
-        totalAmount: 115,
-        orderDate: DateTime(2024, 5, 24),
-        deliveryDate: DateTime(2024, 5, 24)),
-  ];
-
   @override
-  void onInit() {
+  Future<List<OrderModel>> fetchItems() async {
+    if (orderController.allItems.isEmpty) {
+      await orderController.fetchItems();
+    }
+
+    if (customerController.allItems.isEmpty) {
+      await customerController.fetchItems();
+    }
+
     _calculateWeeklySales();
+
     _calculateOrderStatusData();
-    super.onInit();
+    
+    return orderController.allItems;
   }
 
   void _calculateWeeklySales() {
     weeklySales.value = List<double>.filled(7, 0.0);
 
-    for (var order in orders) {
+    for (var order in orderController.allItems) {
       final DateTime orderWeekStart =
           THelperFunctions.getStartOfWeek(order.orderDate);
 
@@ -65,21 +48,16 @@ class DashboardController extends GetxController {
         index = index < 0 ? index + 7 : index;
 
         weeklySales[index] += order.totalAmount;
-
-        print(
-            'OrderDate: ${order.orderDate}, CurrentWeekDay: $orderWeekStart, Index: $index');
       }
     }
-
-    print('Weekly Sales: $weeklySales');
   }
 
   void _calculateOrderStatusData() {
     orderStatusData.clear();
     totalAmounts.value = {for (var status in OrderStatus.values) status: 0.0};
 
-    for (var order in orders) {
-      final status = OrderStatus.values.firstWhere((e) => e.toString() == order.status);
+    for (var order in orderController.allItems) {
+      final status = order.status;
       orderStatusData[status] = (orderStatusData[status] ?? 0) + 1;
 
       totalAmounts[status] = (totalAmounts[status] ?? 0) + order.totalAmount;
@@ -89,17 +67,23 @@ class DashboardController extends GetxController {
   String getDisplayStatusName(OrderStatus status) {
     switch (status) {
       case OrderStatus.pending:
-      return 'Pending';
+        return 'Pending';
       case OrderStatus.processing:
-      return 'Processing';
+        return 'Processing';
       case OrderStatus.shipped:
-      return 'Shipped';
+        return 'Shipped';
       case OrderStatus.delivered:
-      return 'Delivered';
+        return 'Delivered';
       case OrderStatus.cancelled:
-      return 'Cancelled';
+        return 'Cancelled';
       default:
-      return 'Unknown';
+        return 'Unknown';
     }
   }
+
+  @override
+  bool containsSearchQuery(OrderModel item, String query) => false;
+
+  @override
+  Future<void> deleteItem(OrderModel item) async {}
 }

@@ -44,7 +44,7 @@ class TLoginForm extends StatelessWidget {
                   icon:  Icon(controller.hidePassword.value  ? Iconsax.eye_slash : Iconsax.eye)),
                 ),
                     
-                            ),
+                ),
               ),
             const SizedBox(height: TSizes.spaceBtwInputField / 2),
             Row(
@@ -72,7 +72,7 @@ class TLoginForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(onPressed: () => controller.emailAndPasswordSignIn(), child: const Text(TTexts.singIn)),
-              //child: ElevatedButton(onPressed: () => controller.registerAdmin(), child: const Text(TTexts.singIn)),
+              //child: ElevatedButton(onPressed: () => controller.registerAdmin(), child: const Text('Register Admin')),
             )
           ]
         )

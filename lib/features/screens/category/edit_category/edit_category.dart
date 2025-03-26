@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/layouts/templates/site_layout.dart';
 
 import 'edit_category_desktop.dart';
@@ -10,7 +11,7 @@ class EditCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final category = CategoryModel(id :'', name: '', image: '');
+    final category = Get.arguments;
     return TSiteTemplate(
       desktop: EditCategoryDesktopScreen(category: category),
       tablet: EditCategoryTabletScreen(category: category),

@@ -4,7 +4,7 @@ enum TransactionType { bay, sell }
 
 enum ProductType { single, variable }
 
-enum ProductVisibility { published, hidden }
+enum ProductVisibility { published, hidden, draft }
 
 enum TextSize { small, medium, large }
 

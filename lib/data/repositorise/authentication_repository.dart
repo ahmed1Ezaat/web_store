@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:yt_ecommerce_admin_panel/data/repositorise/firebase_auth_exceptions.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes.dart';
 
+import 'firebase_exception.dart';
+
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
 
@@ -35,11 +37,12 @@ class AuthenticationRepository extends GetxController {
     } on FirebaseAuthException catch (e) {
       throw TfirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
-      throw TfirebaseException(e.code).message;
+      throw TFirebaseException(e.code).message;
     } on FormatException catch (_) {
       throw const FormatException();
+
     } on PlatformException catch (e) {
-      throw TplatformException(e.code).message;
+      throw TPlatformException(e.code).message;
     } catch (e) {
       throw 'Something went wrong. Please try again';
     }
@@ -53,11 +56,11 @@ class AuthenticationRepository extends GetxController {
     } on FirebaseAuthException catch (e) {
       throw TfirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
-      throw TfirebaseException(e.code).message;
+      throw TFirebaseException(e.code).message;
     } on FormatException catch (_) {
       throw const FormatException();
     } on PlatformException catch (e) {
-      throw TplatformException(e.code).message;
+      throw TPlatformException(e.code).message;
     } catch (e) {
       throw 'Something went wrong. Please try again';
     }
@@ -70,11 +73,11 @@ class AuthenticationRepository extends GetxController {
     } on FirebaseAuthException catch (e) {
       throw TfirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
-      throw TfirebaseException(e.code).message;
+      throw TFirebaseException(e.code).message;
     } on FormatException catch (_) {
       throw const FormatException();
     } on PlatformException catch (e) {
-      throw TplatformException(e.code).message;
+      throw TPlatformException(e.code).message;
     } catch (e) {
       throw 'Something went wrong. Please try again';
     }

@@ -33,11 +33,11 @@ class TChoiceChip extends StatelessWidget {
                 selected: selected,
                 onSelected: onSelected,
                 backgroundColor: THelperFunctions.getColor(text),
-                labelStyle: TextStyle(color: TColors.white),
-                shape: THelperFunctions.getColor(text) != null ? CircleBorder() : null,
-                label: THelperFunctions.getColor(text) != null ? Text(text) : SizedBox(),
-                padding: THelperFunctions.getColor(text) != null ? EdgeInsets.all(0) : null,
-                labelPadding: THelperFunctions.getColor(text) != null ? EdgeInsets.all(0) : null,
+                labelStyle: const TextStyle(color: TColors.white),
+                shape: THelperFunctions.getColor(text) != null ? const CircleBorder() : null,
+                label: THelperFunctions.getColor(text) != null ? Text(text) : const SizedBox(),
+                padding: THelperFunctions.getColor(text) != null ? const EdgeInsets.all(0) : null,
+                labelPadding: THelperFunctions.getColor(text) != null ? const EdgeInsets.all(0) : null,
             ),
         );
     }

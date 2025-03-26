@@ -46,7 +46,9 @@ class THeader extends StatelessWidget implements PreferredSizeWidget {
                 icon: const Icon(Iconsax.search_normal), onPressed: () {}),
           IconButton(icon: const Icon(Iconsax.notification), onPressed: () {}),
           const SizedBox(width: TSizes.spaceBtwItem / 2),
-          Row(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
              Obx(
               ()=> TRoundedImage(
                 width: 40,

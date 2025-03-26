@@ -20,10 +20,11 @@ class TCircularImage extends StatelessWidget {
     this.imageType = ImageType.asset,
     this.fit = BoxFit.contain,
     this.padding = TSizes.sm,
-    this.file,
+    this.file, required double margin, 
+    
   });
 
-  final BoxFit fit;
+  final BoxFit? fit;
   final String? image;
   final File? file;
   final ImageType imageType;
@@ -31,6 +32,8 @@ class TCircularImage extends StatelessWidget {
   final Color? backgroundColor;
   final Uint8List? memoryImage;
   final double width, height, padding;
+  
+
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +83,7 @@ class TCircularImage extends StatelessWidget {
         color: overlayColor,
         imageUrl: image!,
         errorWidget: (context, url, error) => const Icon(Icons.error),
-        progressIndicatorBuilder: (context, url, downloadProgress) => TShimmerEffect(width: 55, height: 55),
+        progressIndicatorBuilder: (context, url, downloadProgress) => const TShimmerEffect(width: 55, height: 55),
       );
     
     } else {

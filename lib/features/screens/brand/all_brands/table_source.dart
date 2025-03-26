@@ -2,36 +2,42 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:yt_ecommerce_admin_panel/features/screens/brand/brand_controller.dart';
 
 import '../../../../common/widgets/data_table/table_action_icon_buttons.dart';
 import '../../../../common/widgets/images/t_rounded_image.dart';
 import '../../../../routes/routes.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/emums.dart';
-import '../../../../utils/constants/images_strings.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/device/device_utillity.dart';
 
 class BrandRows extends DataTableSource {
+  final controller = BrandController.instance;
   @override
   DataRow? getRow(int index) {
-    return DataRow2(cells: [
+    final brand = controller.filteredItems[index];
+    
+    return DataRow2(
+      selected: controller.selectedRows[index],
+      onSelectChanged: (value) => controller.selectedRows[index] = value ?? false,
+      cells: [
       DataCell(
         Row(
           children: [
-            const TRoundedImage(
+            TRoundedImage(
               width: 50,
               height: 50,
               padding: TSizes.sm,
-              image: TImages.addidasLogo,
-              imageType: ImageType.asset,
+              image: brand.image,
+              imageType: ImageType.network,
               borderRadius: TSizes.borderRadiusMd,
               backgroundColor: TColors.primaryBackground,
             ),
             const SizedBox(width: TSizes.spaceBtwItem),
             Expanded(
               child: Text(
-                'Adidas',
+                brand.name,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(Get.context!)
@@ -53,44 +59,33 @@ class BrandRows extends DataTableSource {
               direction: TDeviceUtils.isMobileScreen(Get.context!)
                   ? Axis.vertical
                   : Axis.horizontal,
-              children: [
+              children: 
+                brand.brandCategories != null
+                ? brand.brandCategories!
+                .map(
+                  (e) =>
                 Padding(
                   padding: EdgeInsets.only(
                       bottom: TDeviceUtils.isMobileScreen(Get.context!)
                           ? 0
                           : TSizes.xs),
-                  child: const Chip(
-                      label: Text('Shoes'), padding: EdgeInsets.all(TSizes.xs)),
-                ), // Padding
-                Padding(
-                  padding: EdgeInsets.only(
-                      bottom: TDeviceUtils.isMobileScreen(Get.context!)
-                          ? 0
-                          : TSizes.xs),
-                  child: const Chip(
-                      label: Text('TrackSuits'),
-                      padding: EdgeInsets.all(TSizes.xs)),
-                ), // Padding
-                Padding(
-                  padding: EdgeInsets.only(
-                      bottom: TDeviceUtils.isMobileScreen(Get.context!)
-                          ? 0
-                          : TSizes.xs),
-                  child: const Chip(
-                      label: Text('Joggers'),
-                      padding: EdgeInsets.all(TSizes.xs)),
-                ),
-              ],
+                  child: Chip(
+                      label: Text(e.name),
+                      padding: const EdgeInsets.all(TSizes.xs))
+                ), 
+                )
+                .toList()
+                : [ const SizedBox()],
             ),
           ),
         ),
       ),
-      const DataCell(Icon(Iconsax.heart5, color: TColors.primary)),
-      DataCell(Text(DateTime.now().toString())),
+       DataCell(brand.isFeatured ? const Icon(Iconsax.heart5, color: TColors.primary) : const Icon(Iconsax.heart)),
+      DataCell(Text(brand.createAt != null ? brand.formattedDate : '')),
       DataCell(
         TTableActionButtons(
-          onEditPressed: () => Get.toNamed(TRoutes.editBrand, arguments: ''),
-          onDeletePressed: () {},
+          onEditPressed: () => Get.toNamed(TRoutes.editBrand, arguments: brand),
+          onDeletePressed: () => controller.confirmAndDeleteItem(brand),
         ),
       ),
     ]);
@@ -100,8 +95,8 @@ class BrandRows extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => 20;
+  int get rowCount => controller.filteredItems.length;
 
   @override
-  int get selectedRowCount => 0;
+  int get selectedRowCount => controller.selectedRows.where((selected) => selected).length;
 }

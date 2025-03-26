@@ -7,6 +7,7 @@ import 'package:yt_ecommerce_admin_panel/common/widgets/breadcrumbs/breadcrumb_w
     import '../../../../routes/routes.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../common/widgets/data_table/table_header.dart';
+import 'category_controller.dart';
 import 'data_table.dart';
 
     class CategoriesTabletScreen extends StatelessWidget {
@@ -14,6 +15,7 @@ import 'data_table.dart';
     
     @override
     Widget build(BuildContext context) {
+      final controller = Get.put(CategoryController());
         return Scaffold(
             body: SingleChildScrollView(
                 child: Padding(
@@ -30,10 +32,13 @@ import 'data_table.dart';
                               child: Column(
                               children: [
                                       // Table Header
-                              TTableHeader(buttonText: 'Create New Category', onPressed: ()=> Get.toNamed(TRoutes.createCategory),),
+                              TTableHeader(buttonText: 'Create New Category', onPressed: ()=> Get.toNamed(TRoutes.createCategory),
+                              searchController: controller.searchTextController,
+                              searchOnChanged: (query) => controller.searchQuery(query), 
+                              ),
                               const SizedBox(height: TSizes.spaceBtwItem),
                                       // Table 
-                              CategoryTable(),
+                              const CategoryTable(),
 
                             ],
                         ),

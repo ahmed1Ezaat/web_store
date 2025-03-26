@@ -5,6 +5,8 @@ import 'package:yt_ecommerce_admin_panel/routes/app_routes.dart';
 import 'package:yt_ecommerce_admin_panel/routes/routes.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/text_strings.dart';
 
+import 'common/styles/app_theme.dart';
+
 
 class App extends StatelessWidget {
   const App({super.key});

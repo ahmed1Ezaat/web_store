@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:yt_ecommerce_admin_panel/common/widgets/icons/circualar_icon.dart';
 import 'package:yt_ecommerce_admin_panel/common/widgets/layouts/headers/section_heading.dart';
 import 'package:yt_ecommerce_admin_panel/utils/constants/colors.dart';
 
@@ -12,26 +13,43 @@ class TDashboardCard extends StatelessWidget {
     
      required this.title,
       required this.subTitle, 
-       this.icon = Iconsax.arrow_up_3,
-        this.color = TColors.success,
-        required this.stats,
-       this.onTap
+      this.icon = Iconsax.arrow_up_3,
+      this.color = TColors.success,
+      required this.stats,
+      this.onTap,
+      required this.headingIconColor,
+      required this.headingIconBgColor,
+      required this.context,
+      required this.headerIcon
        });
   final String title, subTitle;
-  final IconData icon;
-  final Color color;
+  final Color color, headingIconColor, headingIconBgColor;
   final int stats;
   final void Function() ?onTap;
+  final BuildContext context;
+  final IconData icon, headerIcon;
+
 
   @override
   Widget build(BuildContext context) {
     return TRoundedContainer(
       onTap: onTap,
-      padding: EdgeInsets.all(TSizes.lg),
+      padding: const EdgeInsets.all(TSizes.lg),
       child: Column(
         children: [
-          TSectionHeading(title: title, textColor: TColors.textSecondary),
-          SizedBox(height: TSizes.spaceBtwSection),
+          Row(
+            children: [
+              TCircularIcon(
+                icon: headerIcon,
+                backgroundColor: headingIconBgColor,
+                color: headingIconColor,
+                size: TSizes.md,
+              ),
+              const SizedBox(width: TSizes.spaceBtwItem),
+              TSectionHeading(title: title, textColor: TColors.textSecondary),
+            ],
+          ),
+          const SizedBox(height: TSizes.spaceBtwSection),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
