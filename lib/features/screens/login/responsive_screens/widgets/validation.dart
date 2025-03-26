@@ -1,3 +1,5 @@
+// ignore_for_file: body_might_complete_normally_nullable
+
 class TValidator {
   static String? validateEmptyText(String? filedName, String? value) {
     if (value == null || value.isEmpty) {
