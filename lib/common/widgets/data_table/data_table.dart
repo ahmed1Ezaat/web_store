@@ -1,39 +1,50 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:yt_ecommerce_admin_panel/common/widgets/data_table/paginated_data_table.dart';
-import 'package:yt_ecommerce_admin_panel/features/screens/order/order_controller.dart';
-import 'package:yt_ecommerce_admin_panel/utils/device/device_utillity.dart';
 
-import '../../../features/screens/reset_password/responsive_screen/table_source.dart';
+import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/sizes.dart';
 
-class DashboardOrderTable extends StatelessWidget {
-  const DashboardOrderTable({super.key});
+class TDataTable extends StatelessWidget {
+  const TDataTable({
+    super.key,
+    required this.columns,
+    required this.rows,
+  });
+
+  /// List of columns for the data table
+  final List<DataColumn> columns;
+
+  /// List of rows for the data table
+  final List<DataRow> rows;
 
   @override
   Widget build(BuildContext context) {
-    final controller = OrderController.instance;
-    return  Obx(
-      (){ 
-        Text(controller.filteredItems.length.toString());
-        Text(controller.selectedRows.length.toString());
-        return TPaginatedDataTable(
-        minWidth: 700,
-        tableHeight: 500,
-        dataRowHeight: TSizes.xl * 1.2,
-        sortAscending: controller.sortAscending.value,
-        sortColumnIndex: controller.sortColumnIndex.value,
-        columns: [
-          DataColumn2(label: const Text('Order ID'), onSort: (columnIndex, ascending) => controller.sortById(columnIndex, ascending),),
-          const DataColumn2(label: Text('Date')),
-          const DataColumn2(label: Text('Items')),
-          DataColumn2(label: const Text('Status'), fixedWidth: TDeviceUtils.isMobileScreen(context) ? 120 : null,),
-          const DataColumn2(label: Text('Amount')),
-        ],
-        source: OrderRows(),
-      );
-      }
+    return SizedBox(
+      // Set the height of the data table to 80% of the screen height
+      height: MediaQuery.of(context).size.height * 0.8,
+      child: DataTable2(
+        // Assign the provided columns to the data table
+        columns: columns,
+        // Assign the provided rows to the data table
+        rows: rows,
+        // Set the minimum width of the data table
+        minWidth: 600,
+        // Set the spacing between columns
+        columnSpacing: 12,
+        // Set the horizontal margin of the data table
+        horizontalMargin: 12,
+        // Set the color of the heading row
+        headingRowColor: WidgetStateProperty.resolveWith((states) => TColors.primary),
+        // Set the decoration for the data table
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(TSizes.borderRadiusMd)),
+        ),
+        // Set the decoration for the heading row of the data table
+        headingRowDecoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(TSizes.borderRadiusMd), topRight: Radius.circular(TSizes.borderRadiusMd)),
+        ),
+      ),
     );
   }
 }

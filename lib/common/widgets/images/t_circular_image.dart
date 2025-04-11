@@ -1,12 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/emums.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/shimmer.dart';
-
+import '../../../utils/constants/enums.dart';
 import '../../../utils/constants/sizes.dart';
+import '../shimmers/shimmer.dart';
 
 class TCircularImage extends StatelessWidget {
   const TCircularImage({
@@ -18,10 +16,10 @@ class TCircularImage extends StatelessWidget {
     this.backgroundColor,
     this.image,
     this.imageType = ImageType.asset,
-    this.fit = BoxFit.contain,
+    this.fit = BoxFit.cover,
     this.padding = TSizes.sm,
-    this.file, required double margin, 
-    
+    this.margin = 0,
+    this.file,
   });
 
   final BoxFit? fit;
@@ -31,9 +29,7 @@ class TCircularImage extends StatelessWidget {
   final Color? overlayColor;
   final Color? backgroundColor;
   final Uint8List? memoryImage;
-  final double width, height, padding;
-  
-
+  final double width, height, padding, margin;
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +37,9 @@ class TCircularImage extends StatelessWidget {
       width: width,
       height: height,
       padding: EdgeInsets.all(padding),
+      margin: EdgeInsets.all(margin),
       decoration: BoxDecoration(
-        color: backgroundColor ??
-            (Theme.of(context).brightness == Brightness.dark
-                ? Colors.black
-                : Colors.white),
+        color: backgroundColor ?? (Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white),
         borderRadius: BorderRadius.circular(width >= height ? width : height),
       ),
       child: _buildImageWidget(),
@@ -70,63 +64,60 @@ class TCircularImage extends StatelessWidget {
         break;
     }
 
+    // Apply ClipRRect directly to the image widget
     return ClipRRect(
       borderRadius: BorderRadius.circular(width >= height ? width : height),
       child: imageWidget,
     );
   }
 
+  // Function to build the network image widget
   Widget _buildNetworkImage() {
     if (image != null) {
+      // Use CachedNetworkImage for efficient loading and caching of network images // Not working in Web but just for loading
       return CachedNetworkImage(
-          fit: fit,
+        fit: fit,
         color: overlayColor,
         imageUrl: image!,
         errorWidget: (context, url, error) => const Icon(Icons.error),
         progressIndicatorBuilder: (context, url, downloadProgress) => const TShimmerEffect(width: 55, height: 55),
       );
-    
     } else {
+      // Return an empty container if no image is provided
       return Container();
-
     }
   }
 
-Widget _buildMemoryImage() {
+  // Function to build the memory image widget
+  Widget _buildMemoryImage() {
     if (memoryImage != null) {
-      return Image(
-        fit: fit,
-        image: MemoryImage(memoryImage!),
-        color: overlayColor,
-      );
-    } else{
+      // Display image from memory using Image widget
+      return Image(fit: fit, image: MemoryImage(memoryImage!), color: overlayColor);
+    } else {
+      // Return an empty container if no image is provided
       return Container();
     }
-   }
+  }
 
-    Widget _buildFileImage() {
+  // Function to build the asset image widget
+  Widget _buildFileImage() {
     if (file != null) {
-      return Image(
-        fit: fit,
-        image: FileImage(file!),
-        color: overlayColor,
-      );
-    } else{
+      // Display image from assets using Image widget
+      return Image(fit: fit, image: FileImage(file!), color: overlayColor);
+    } else {
+      // Return an empty container if no image is provided
       return Container();
     }
-   }
+  }
 
-    Widget _buildAssetImage(){
+  // Function to build the asset image widget
+  Widget _buildAssetImage() {
     if (image != null) {
-      return Image(
-        fit: fit,
-        image: AssetImage(image!),
-        color: overlayColor,
-
-      );
-    
-    }else{
+      // Display image from assets using Image widget
+      return Image(fit: fit, image: AssetImage(image!), color: overlayColor);
+    } else {
+      // Return an empty container if no image is provided
       return Container();
     }
-   }
+  }
 }

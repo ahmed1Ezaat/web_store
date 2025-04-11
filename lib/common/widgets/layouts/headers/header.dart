@@ -1,97 +1,101 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:yt_ecommerce_admin_panel/common/widgets/images/t_rounded_image.dart';
-import 'package:yt_ecommerce_admin_panel/features/controllers/user_controller.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/colors.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/emums.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/images_strings.dart';
-import 'package:yt_ecommerce_admin_panel/utils/constants/sizes.dart';
-import 'package:yt_ecommerce_admin_panel/utils/device/device_utillity.dart';
+import '../../../../features/personalization/controllers/user_controller.dart';
+import '../../../../utils/constants/colors.dart';
+import '../../../../utils/constants/enums.dart';
+import '../../../../utils/constants/image_strings.dart';
+import '../../../../utils/constants/sizes.dart';
+import '../../../../utils/device/device_utility.dart';
+import '../../appbar/appbar.dart';
+import '../../images/t_rounded_image.dart';
+import '../../shimmers/shimmer.dart';
 
-import '../../../../utils/constants/shimmer.dart';
-
+/// Header widget for the application
 class THeader extends StatelessWidget implements PreferredSizeWidget {
-  const THeader({super.key,  this.scaffoldKey});
+  const THeader({
+    super.key,
+    required this.scaffoldKey,
+  });
 
-  final GlobalKey<ScaffoldState>? scaffoldKey;
+  /// GlobalKey to access the Scaffold state
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
     final controller = UserController.instance;
     return Container(
+      /// Background Color, Bottom Border
       decoration: const BoxDecoration(
         color: TColors.white,
         border: Border(bottom: BorderSide(color: TColors.grey, width: 1)),
       ),
-      padding: const EdgeInsets.symmetric(
-          horizontal: TSizes.md, vertical: TSizes.sm),
-      child: AppBar(
-        leading: !TDeviceUtils.isDesktopScreen(context)
-            ? IconButton(onPressed: () => scaffoldKey?.currentState?.openDrawer(), icon: const Icon(Iconsax.menu))
-            : null,
-        title: TDeviceUtils.isDesktopScreen(context)
-            ? SizedBox(
+      padding: const EdgeInsets.symmetric(horizontal: TSizes.md, vertical: TSizes.sm),
+      child: TAppBar(
+        /// Mobile Menu
+        leadingIcon: !TDeviceUtils.isDesktopScreen(context) ? Iconsax.menu : null,
+        leadingOnPressed: !TDeviceUtils.isDesktopScreen(context) ? () => scaffoldKey.currentState?.openDrawer() : null,
+        title: Row(
+          children: [
+            /// Search
+            if (TDeviceUtils.isDesktopScreen(context))
+              SizedBox(
                 width: 400,
                 child: TextFormField(
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Iconsax.search_normal_1),
-                    hintText: 'Search anything...',
-                  ),
-                ))
-            : null,
+                  decoration: const InputDecoration(prefixIcon: Icon(Iconsax.search_normal), hintText: 'Search anything...'),
+                ),
+              ),
+          ],
+        ),
         actions: [
-          if (!TDeviceUtils.isDesktopScreen(context))
-            IconButton(
-                icon: const Icon(Iconsax.search_normal), onPressed: () {}),
+          // Search Icon on Mobile
+          if (!TDeviceUtils.isDesktopScreen(context)) IconButton(icon: const Icon(Iconsax.search_normal), onPressed: () {}),
+
+          // Notification Icon
           IconButton(icon: const Icon(Iconsax.notification), onPressed: () {}),
-          const SizedBox(width: TSizes.spaceBtwItem / 2),
+          const SizedBox(width: TSizes.spaceBtwItems / 2),
+
+          /// User Data
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-             Obx(
-              ()=> TRoundedImage(
-                width: 40,
-                padding: 2,
-                height: 40,
-                imageType: controller.user.value.profilePicture.isNotEmpty ? ImageType.network : ImageType.asset,
-                image: controller.user.value.profilePicture.isNotEmpty ? controller.user.value.profilePicture : TImages.user,
-                           ),
-             ),
-            const SizedBox(width: TSizes.sm),
-            if (!TDeviceUtils.isMobileScreen(context))
+              /// User Profile Image
               Obx(
-                ()=> Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    controller .loading.value ?
-                    const TShimmerEffect(
-                      width: 50,
-                      height: 13,
-                    ) 
-                     : Text(
-                      controller.user.value.fullName,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                      controller .loading.value ?
-                    const TShimmerEffect(
-                      width: 50,
-                      height: 13) 
-                     : Text(
-                      controller.user.value.email,
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                  ],
+                () => TRoundedImage(
+                  width: 40,
+                  padding: 2,
+                  height: 40,
+                  fit: BoxFit.cover,
+                  imageType: controller.user.value.profilePicture.isNotEmpty ? ImageType.network : ImageType.asset,
+                  image: controller.user.value.profilePicture.isNotEmpty ? controller.user.value.profilePicture : TImages.user,
                 ),
-              )
-          ])
+              ),
+
+              const SizedBox(width: TSizes.sm),
+
+              /// User Profile Data [Hide on Mobile]
+              if (!TDeviceUtils.isMobileScreen(context))
+                Obx(
+                  () => Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      controller.loading.value
+                          ? const TShimmerEffect(width: 50, height: 13)
+                          : Text(controller.user.value.fullName, style: Theme.of(context).textTheme.titleLarge),
+                      controller.loading.value
+                          ? const TShimmerEffect(width: 70, height: 13)
+                          : Text(controller.user.value.email, style: Theme.of(context).textTheme.labelMedium),
+                    ],
+                  ),
+                ),
+            ],
+          ),
         ],
       ),
     );
   }
 
   @override
-  Size get preferredSize =>
-      Size.fromHeight(TDeviceUtils.getAppBarHeight() + 15);
+  Size get preferredSize => Size.fromHeight(TDeviceUtils.getAppBarHeight() + 15);
 }

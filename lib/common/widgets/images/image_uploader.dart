@@ -1,18 +1,18 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:yt_ecommerce_admin_panel/features/screens/reset_password/widgets/circular_container.dart';
 
-import '../../../utils/constants/colors.dart';
-import '../../../utils/constants/emums.dart';
-import '../../../utils/constants/sizes.dart';
-import '../icons/circualar_icon.dart';
-import 't_circular_image.dart';
+import '../../../../../../common/widgets/icons/t_circular_icon.dart';
+import '../../../../../../common/widgets/images/t_circular_image.dart';
+import '../../../../../../utils/constants/colors.dart';
+import '../../../../../../utils/constants/enums.dart';
+import '../../../../../../utils/constants/sizes.dart';
+import '../containers/circular_container.dart';
 import 't_rounded_image.dart';
 
+/// Widget for uploading images with optional editing functionality
 class TImageUploader extends StatelessWidget {
-  const  TImageUploader({
+  const TImageUploader({
     super.key,
     this.image,
     this.onIconButtonPressed,
@@ -26,46 +26,46 @@ class TImageUploader extends StatelessWidget {
     this.bottom = 0,
     this.right,
     this.left = 0,
-   this.loading = false,
+    this.loading = false,
   });
-   final bool loading;
-  // Whether to display the image in a circular shape
+
+  /// Whether to display the loading instead of icon
+  final bool loading;
+
+  /// Whether to display the image in a circular shape
   final bool circular;
 
-  // URL or path of the image to display
+  /// URL or path of the image to display
   final String? image;
 
-  // Type of image (network, asset, memory, etc.)
+  /// Type of image (network, asset, memory, etc.)
   final ImageType imageType;
 
-  // Width of the image uploader widget
+  /// Width of the image uploader widget
   final double width;
 
-  // Height of the image uploader widget
+  /// Height of the image uploader widget
   final double height;
 
-  // Byte data of the image (for memory images)
+  /// Byte data of the image (for memory images)
   final Uint8List? memoryImage;
 
-  // Icon to display on the image uploader widget
+  /// Icon to display on the image uploader widget
   final IconData icon;
 
-  // Offset from the top edge of the widget
+  /// Offset from the top edge of the widget
   final double? top;
-  // Offset from the bottom edge of the widget
 
+  /// Offset from the bottom edge of the widget
   final double? bottom;
 
-// Offset from the right edge of the widget
-
+  /// Offset from the right edge of the widget
   final double? right;
 
-// Offset from the left edge of the widget
-
+  /// Offset from the left edge of the widget
   final double? left;
 
-// Callback function for when the icon button is pressed
-
+  /// Callback function for when the icon button is pressed
   final void Function()? onIconButtonPressed;
 
   @override
@@ -73,17 +73,16 @@ class TImageUploader extends StatelessWidget {
     return Stack(
       children: [
         // Display the image in either circular or rounded shape
-
-        circular
-            ? TCircularImage(
+        !circular
+            ? TRoundedImage(
                 image: image,
                 width: width,
                 height: height,
                 imageType: imageType,
                 memoryImage: memoryImage,
-                backgroundColor: TColors.primaryBackground, margin: 0,
+                backgroundColor: TColors.primaryBackground,
               )
-            : TRoundedImage(
+            : TCircularImage(
                 image: image,
                 width: width,
                 height: height,
@@ -91,26 +90,26 @@ class TImageUploader extends StatelessWidget {
                 memoryImage: memoryImage,
                 backgroundColor: TColors.primaryBackground,
               ),
-
+        // Display the edit icon button on top of the image
         Positioned(
-            top: top,
-            left: left,
-            right: right,
-            bottom: bottom,
-            
-            child: loading
-            ?  const TCircularContainer(
-              width: TSizes.xl,
-              height: TSizes.xl,
-              child: CircularProgressIndicator(strokeWidth: 2, backgroundColor: TColors.primary, color: Colors.white),
-            )
-          :  TCircularIcon(
-              icon: icon,
-              size: TSizes.md,
-              color: TColors.white,
-              onPressed: onIconButtonPressed,
-              backgroundColor: TColors.primary.withOpacity(0.9),
-            ))
+          top: top,
+          left: left,
+          right: right,
+          bottom: bottom,
+          child: loading
+              ? const TCircularContainer(
+                  width: TSizes.xl,
+                  height: TSizes.xl,
+                  child: CircularProgressIndicator(strokeWidth: 2, backgroundColor: TColors.primary, color: Colors.white),
+                )
+              : TCircularIcon(
+                  icon: icon,
+                  size: TSizes.md,
+                  color: Colors.white,
+                  onPressed: onIconButtonPressed,
+                  backgroundColor: TColors.primary.withOpacity(0.9),
+                ),
+        )
       ],
     );
   }
